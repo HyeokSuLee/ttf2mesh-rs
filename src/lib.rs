@@ -55,7 +55,11 @@ fn path_to_cstring<P: AsRef<Path>>(path: P) -> CString {
 
 #[cfg(windows)]
 fn path_to_cstring<P: AsRef<Path>>(path: P) -> CString {
-    CString::new(path.as_ref().as_os_str().to_str().unwrap()).unwrap()
+    let os_str = path.as_ref().as_os_str();
+    match os_str.to_str() {
+        Some(s) => CString::new(s).expect("Failed to convert path to CString"),
+        None => panic!("UTF8Error"),
+    }
 }
 
 #[cfg(test)]

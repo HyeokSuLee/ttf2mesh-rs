@@ -73,6 +73,7 @@ impl TTFFile {
         }
 
         let file_name = path_to_cstring(path);
+
         let mut ttf = MaybeUninit::uninit();
         let error = unsafe { sys::ttf_load_from_file(file_name.as_ptr(), ttf.as_mut_ptr(), false) };
 
